@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -20,10 +21,10 @@ namespace SalesTax.Controllers
 			_lineItemRepo = lineItemRepo;
 		}
 
-		public JsonResult Index()
+		public ViewResult Index()
 		{
-			var model = GetLineItemsList();
-			return Json(model);
+			var model = GetItem(1021);
+			return View (model);
 		}
 
 		public IActionResult Privacy()
@@ -31,10 +32,12 @@ namespace SalesTax.Controllers
 			return View();
 		}
 
-		public JsonResult GetItem(int id)
+		public ViewResult GetItem(int Id)
 		{
-			ILineItem model = _lineItemRepo.GetLineItem(1021); 
-			return Json(model);
+			ILineItem model = _lineItemRepo.GetLineItem(1021);
+			ViewData["LineItem"] = model;
+			ViewData["PageTitle"] = "Single Item";
+			return View(model);
 		}
 
 		public List<ILineItem> GetLineItemsList()

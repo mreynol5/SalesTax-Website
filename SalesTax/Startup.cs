@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SalesTax.Controllers;
 using SalesTax.Models;
 using SalesTax.Repositories;
 
@@ -43,13 +44,22 @@ namespace SalesTax
 
 			app.UseRouting();
 
-			app.UseAuthorization();
-
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllerRoute(
+					name: "item",
+					pattern: "Home/{*GetItem}",
+					defaults: new { controller = "Home", action = "GetItem" });
+
+				endpoints.MapControllerRoute(
+					name: "itemlist",
+					pattern: "Home/{*GetLineItemsList}",
+					defaults: new {controller = "Home", action = "GetLineItemsList "});
+
+				endpoints.MapControllerRoute(
 					name: "default",
-					pattern: "{controller=Home}/{action=Index}/{id?}");
+					pattern: "{controller=Home}/{action=Index}/{Id?}");
+
 			});
 		
 		}

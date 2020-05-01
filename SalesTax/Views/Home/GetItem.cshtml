@@ -1,0 +1,17 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Get Item Page</title>
+</head>
+<body>
+	<h3>@ViewData["PageTitle"]</h3>
+			@{ 
+					var lineItem = ViewData["LineItem"] as SalesTax.Models.LineItem;
+				}
+	<div>
+		Id :  @lineItem.Id
+	</div>
+	<div>
+		Quantity : @lineItem.Quantity
+	</div>
+</body>
+</html>

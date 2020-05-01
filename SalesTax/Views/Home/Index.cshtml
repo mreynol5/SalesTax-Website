@@ -1,8 +1,17 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Index Page</title>
+</head>
+<body>
+	<h3>Index Page</h3>
+	<div>
+		Id: @Model.Id
+	</div>
+	<div>
+		Quantity: @Model.Quantity
+	</div>
+	<div>
+		Unit Price: @Model.UnitPrice
+	</div>
+</body>
+</html>

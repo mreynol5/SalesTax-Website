@@ -25,9 +25,9 @@ namespace SalesTax.Repositories
 			return _LinetemList;
 		}
 
-		public ILineItem GetLineItem(int id)
+		public ILineItem GetLineItem(int Id)
 		{
-			return _LinetemList.FirstOrDefault(e => e.Id == id);
+			return _LinetemList.FirstOrDefault(e => e.Id == Id);
 		}
 	}
 }
