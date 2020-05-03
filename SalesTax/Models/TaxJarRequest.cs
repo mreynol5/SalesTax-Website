@@ -33,7 +33,7 @@ namespace SalesTax.Models
 		public float Amount { get; set; } = 0.0F;
 
 		[JsonPropertyName("line_items")]
-		public LineItem[] Lineitem { get; set; }
+		public ILineItem[] Lineitem { get; set; }
 
 	}
 }

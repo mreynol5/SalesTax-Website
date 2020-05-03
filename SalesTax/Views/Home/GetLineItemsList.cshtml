@@ -1,8 +1,24 @@
-﻿<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-	<title>Cart Contents</title>
-</head>
-<body>
-	<h3>This is a list of the items in the cart.</h3>
-</body>
-</html>
+﻿@model List<SalesTax.Models.LineItem>
+
+<div class="card-deck">
+	@foreach(var item in Model)
+	{
+		<div class="card m-3">
+			<div class="card-header">
+				<h3>Cart Contents</h3>
+			</div>
+			<img class="card-img-top" src="#" alt="Alternate Text" />
+		</div>
+	}
+	<div class="card-header">
+		<h1>Cart Contents</h1>
+	</div>
+	<div class="card-body text-center">
+		<img class="card-img-top" src="~ /images/noimage.jpg" />
+		<div class="card-footer text-center">
+			<a href="#" class="btn btn-primary">View</a>
+			<a href="#" class="btn btn-primary">Edit</a>
+			<a href="#" class="btn btn-danger">Delete</a>
+		</div>
+	</div>
+</div>

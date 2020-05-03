@@ -5,45 +5,58 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SalesTax.Models;
 using SalesTax.Repositories;
+using SalesTax.ViewModels;
 
 namespace SalesTax.Controllers
 {
+	[Route("[controller]/[action]")]
 	public class HomeController : Controller
 	{
-		private readonly ILogger<HomeController> _logger;
-
-		private  ILineItemRepo _lineItemRepo { get; }
-
 		public HomeController(ILogger<HomeController> logger,
-			ILineItemRepo lineItemRepo)
+		ILineItemRepo lineItemRepo)
 		{
 			_logger = logger;
 			_lineItemRepo = lineItemRepo;
 		}
 
+		private readonly ILogger<HomeController> _logger;
+
+		private  ILineItemRepo _lineItemRepo { get; }
+
+	
+		[Route("")]
+		[Route("~/")]
 		public ViewResult Index()
 		{
-			var model = GetItem(1021);
-			return View (model);
+			HomeLineItemViewModel homeLineItemViewModel = new HomeLineItemViewModel();
+			ILineItem model = _lineItemRepo.GetLineItem(1021);
+			return View(model);
 		}
 
+		[Route("Privacy")]
 		public IActionResult Privacy()
 		{
 			return View();
 		}
 
-		public ViewResult GetItem(int Id)
+
+		[Route("GetItem/{id?}")]
+		public ViewResult GetItem(int? Id)
 		{
-			ILineItem model = _lineItemRepo.GetLineItem(1021);
-			ViewData["LineItem"] = model;
-			ViewData["PageTitle"] = "Single Item";
-			return View(model);
+			HomeLineItemViewModel homeLineItemViewModel = new HomeLineItemViewModel()
+			{
+				lineItem = _lineItemRepo.GetLineItem(Id??1021),
+				PageTitle = "Single Item Details"
+			};
+			return View(homeLineItemViewModel);
 		}
 
-		public List<ILineItem> GetLineItemsList()
+		[Route("GetAll")]
+		public ViewResult GetLineItemsList()
 		{
-			List <ILineItem> model = _lineItemRepo.GetLineItemsList();
-			return model;
+			HomeLineItemViewModel homeLineItemViewModel = new HomeLineItemViewModel();
+			List<ILineItem> model = _lineItemRepo.GetLineItemsList();
+			return View (model);
 		}
 
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

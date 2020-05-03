@@ -1,17 +1,20 @@
-﻿<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-	<title>Index Page</title>
-</head>
-<body>
-	<h3>Index Page</h3>
-	<div>
-		Id: @Model.Id
+﻿@model List<SalesTax.Models.LineItem>
+
+@{
+	ViewBag.Title = "Cart Contents";
+}
+
+@foreach (var item in Model)
+{
+	<div class=" card m-3">
+		<div class=" card-header">
+			<header>Cart Contents</header>
+		</div>
+		<!--<img class="c" src ="~/images/CallTheSuper.png"/>-->
+		<div class="card-footer text-center">
+			<a href="#" class="btn btn-primary">View </a>
+			<a href="#" class="btn btn-primary">Edit </a>
+			<a href="#" class="btn btn-danger">Delete </a>
+		</div>
 	</div>
-	<div>
-		Quantity: @Model.Quantity
-	</div>
-	<div>
-		Unit Price: @Model.UnitPrice
-	</div>
-</body>
-</html>
+}		

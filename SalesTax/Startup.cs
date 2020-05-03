@@ -1,15 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SalesTax.Controllers;
-using SalesTax.Models;
 using SalesTax.Repositories;
 
 namespace SalesTax
@@ -41,25 +34,25 @@ namespace SalesTax
 				app.UseExceptionHandler("/Home/Error");
 			}
 			app.UseStaticFiles();
-
+			app.UseHttpsRedirection();
 			app.UseRouting();
-
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllerRoute(
 					name: "item",
-					pattern: "Home/{*GetItem}",
+					pattern: "Home/GetItem/{id?}",
 					defaults: new { controller = "Home", action = "GetItem" });
 
 				endpoints.MapControllerRoute(
 					name: "itemlist",
-					pattern: "Home/{*GetLineItemsList}",
-					defaults: new {controller = "Home", action = "GetLineItemsList "});
+					pattern: "Home/{GetLineItemsList}",
+					defaults: new { controller = "Home", action = "GetLineItemsList " });
 
 				endpoints.MapControllerRoute(
 					name: "default",
 					pattern: "{controller=Home}/{action=Index}/{Id?}");
 
+				//endpoints.MapControllers();		  //uncomment for Attribute Routing
 			});
 		
 		}

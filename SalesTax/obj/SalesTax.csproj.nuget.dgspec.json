@@ -55,6 +55,10 @@
               "target": "Package",
               "version": "[12.0.3, )"
             },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[5.4.1, )"
+            },
             "TaxJar": {
               "target": "Package",
               "version": "[3.3.0, )"

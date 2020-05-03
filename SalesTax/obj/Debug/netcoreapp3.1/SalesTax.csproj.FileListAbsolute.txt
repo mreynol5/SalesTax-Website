@@ -330,9 +330,6 @@ C:\Projects\SalesTax\SalesTax\bin\Debug\netcoreapp3.1\ru\Microsoft.CodeAnalysis.
 C:\Projects\SalesTax\SalesTax\bin\Debug\netcoreapp3.1\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
 C:\Projects\SalesTax\SalesTax\bin\Debug\netcoreapp3.1\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
 C:\Projects\SalesTax\SalesTax\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
-C:\Projects\SalesTax\SalesTax\obj\Debug\netcoreapp3.1\SalesTax.csproj.CoreCompileInputs.cache
-C:\Projects\SalesTax\SalesTax\obj\Debug\netcoreapp3.1\SalesTax.MvcApplicationPartsAssemblyInfo.cs
-C:\Projects\SalesTax\SalesTax\obj\Debug\netcoreapp3.1\SalesTax.MvcApplicationPartsAssemblyInfo.cache
 C:\Projects\SalesTax\SalesTax\obj\Debug\netcoreapp3.1\SalesTax.RazorAssemblyInfo.cache
 C:\Projects\SalesTax\SalesTax\obj\Debug\netcoreapp3.1\SalesTax.RazorAssemblyInfo.cs
 C:\Projects\SalesTax\SalesTax\obj\Debug\netcoreapp3.1\SalesTax.AssemblyInfoInputs.cache
@@ -344,6 +341,7 @@ C:\Projects\SalesTax\SalesTax\obj\Debug\netcoreapp3.1\Razor\Views\Home\GetItem.c
 C:\Projects\SalesTax\SalesTax\obj\Debug\netcoreapp3.1\Razor\Views\Home\GetLineItemsList.cshtml.g.cs
 C:\Projects\SalesTax\SalesTax\obj\Debug\netcoreapp3.1\Razor\Views\Home\Index.cshtml.g.cs
 C:\Projects\SalesTax\SalesTax\obj\Debug\netcoreapp3.1\Razor\Views\Home\Privacy.cshtml.g.cs
+C:\Projects\SalesTax\SalesTax\obj\Debug\netcoreapp3.1\Razor\Views\Home\_ViewStart.cshtml.g.cs
 C:\Projects\SalesTax\SalesTax\obj\Debug\netcoreapp3.1\Razor\Views\Shared\Error.cshtml.g.cs
 C:\Projects\SalesTax\SalesTax\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_Layout.cshtml.g.cs
 C:\Projects\SalesTax\SalesTax\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_ValidationScriptsPartial.cshtml.g.cs
@@ -358,3 +356,11 @@ C:\Projects\SalesTax\SalesTax\obj\Debug\netcoreapp3.1\staticwebassets\SalesTax.S
 C:\Projects\SalesTax\SalesTax\obj\Debug\netcoreapp3.1\SalesTax.dll
 C:\Projects\SalesTax\SalesTax\obj\Debug\netcoreapp3.1\SalesTax.pdb
 C:\Projects\SalesTax\SalesTax\obj\Debug\netcoreapp3.1\SalesTax.genruntimeconfig.cache
+C:\Projects\SalesTax\SalesTax\bin\Debug\netcoreapp3.1\Microsoft.OpenApi.dll
+C:\Projects\SalesTax\SalesTax\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Swagger.dll
+C:\Projects\SalesTax\SalesTax\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Projects\SalesTax\SalesTax\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Projects\SalesTax\SalesTax\obj\Debug\netcoreapp3.1\SalesTax.csproj.CoreCompileInputs.cache
+C:\Projects\SalesTax\SalesTax\obj\Debug\netcoreapp3.1\SalesTax.MvcApplicationPartsAssemblyInfo.cs
+C:\Projects\SalesTax\SalesTax\obj\Debug\netcoreapp3.1\SalesTax.MvcApplicationPartsAssemblyInfo.cache
+C:\Projects\SalesTax\SalesTax\bin\Debug\netcoreapp3.1\libman.json
