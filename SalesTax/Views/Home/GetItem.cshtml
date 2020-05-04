@@ -1,21 +1,18 @@
-﻿@model SalesTax.ViewModels.HomeLineItemViewModel
+﻿@model LineItem
 
 	<div class="row justify-content-center m-3">
 		<div class="col-sm-9">
 			<div class="card">
 				<div class="card-header">
-					<h4>@Model.lineItem.Id</h4>
-					<h4>@Model.lineItem.Name</h4>
-					<h4>@Model.lineItem.Quantity </h4>
-					<h4>@Model.lineItem.UnitPrice</h4>
+					<h4>@Model.Name</h4>
 				</div>
 				<div class="card-body text-center">
 					<img class="card-img-top" src="~/images/noimage.jpg" />
 
-					<h4>Item ID : @Model.lineItem.Id</h4>
-					<h4>Item Name : @Model.lineItem.Name</h4>
-					<h4>Item Price : @Model.lineItem.UnitPrice</h4>
-					<h4>Item Quantity : @Model.lineItem.Quantity</h4>
+					<h4>Item ID : @Model.Id</h4>
+					<h4>Item Name : @Model.Name</h4>
+					<h4>Item Price : @Model.UnitPrice</h4>
+					<h4>Item Quantity : @Model.Quantity</h4>
 				</div>
 				<div class="card-footer text-center">
 					<a href="#" class="btn btn-primary">Back</a>

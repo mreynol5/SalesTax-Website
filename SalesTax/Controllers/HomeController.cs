@@ -28,9 +28,10 @@ namespace SalesTax.Controllers
 		[Route("~/")]
 		public ViewResult Index()
 		{
-			HomeLineItemViewModel homeLineItemViewModel = new HomeLineItemViewModel();
-			ILineItem model = _lineItemRepo.GetLineItem(1021);
-			return View(model);
+			HomeLineItemListViewModel homeLineItemListViewModel = new HomeLineItemListViewModel();
+			//var model = _lineItemRepo.GetLineItem(1021);
+			var model = _lineItemRepo.GetLineItemsList();
+			return View("GetLineItemsList", model  );
 		}
 
 		[Route("Privacy")]
@@ -43,9 +44,10 @@ namespace SalesTax.Controllers
 		[Route("GetItem/{id?}")]
 		public ViewResult GetItem(int? Id)
 		{
+			int id = 1024;
 			HomeLineItemViewModel homeLineItemViewModel = new HomeLineItemViewModel()
 			{
-				lineItem = _lineItemRepo.GetLineItem(Id??1021),
+				Item = _lineItemRepo.GetLineItem(id),
 				PageTitle = "Single Item Details"
 			};
 			return View(homeLineItemViewModel);
@@ -54,7 +56,7 @@ namespace SalesTax.Controllers
 		[Route("GetAll")]
 		public ViewResult GetLineItemsList()
 		{
-			HomeLineItemViewModel homeLineItemViewModel = new HomeLineItemViewModel();
+			HomeLineItemListViewModel homeLineItemListViewModel = new HomeLineItemListViewModel();
 			List<ILineItem> model = _lineItemRepo.GetLineItemsList();
 			return View (model);
 		}

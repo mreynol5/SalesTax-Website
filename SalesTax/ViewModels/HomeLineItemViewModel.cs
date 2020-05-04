@@ -4,7 +4,7 @@ namespace SalesTax.ViewModels
 {
 	public class HomeLineItemViewModel
 	{
-		public ILineItem  lineItem { get; set; }
+		public ILineItem Item { get; set; }
 		public string PageTitle { get; set; }
 		public string Name { get; set; }
 		public string Description { get; set; }
