@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SalesTax.Models;
@@ -12,26 +14,21 @@ namespace SalesTax.Controllers
 	[Route("[controller]/[action]")]
 	public class HomeController : Controller
 	{
-		public HomeController(ILogger<HomeController> logger,
-		ILineItemRepo lineItemRepo)
+		private readonly IWebHostEnvironment hostingEnvironment;
+		private readonly ILineItemRepo _lineItemRepo;
+
+		public HomeController(ILineItemRepo lineItemRepo, IWebHostEnvironment hostingEnvironment)
 		{
-			_logger = logger;
 			_lineItemRepo = lineItemRepo;
+			this.hostingEnvironment = hostingEnvironment;
 		}
-
-		private readonly ILogger<HomeController> _logger;
-
-		private  ILineItemRepo _lineItemRepo { get; }
-
 	
 		[Route("")]
 		[Route("~/")]
 		public ViewResult Index()
-		{
-			HomeLineItemListViewModel homeLineItemListViewModel = new HomeLineItemListViewModel();
-			//var model = _lineItemRepo.GetLineItem(1021);
+		{		
 			var model = _lineItemRepo.GetLineItemsList();
-			return View("GetLineItemsList", model  );
+			return View(model  );
 		}
 
 		[Route("Privacy")]
@@ -40,7 +37,7 @@ namespace SalesTax.Controllers
 			return View();
 		}
 
-
+		[HttpGet]
 		[Route("GetItem/{id?}")]
 		public ViewResult GetItem(int? Id)
 		{
@@ -57,8 +54,44 @@ namespace SalesTax.Controllers
 		public ViewResult GetLineItemsList()
 		{
 			HomeLineItemListViewModel homeLineItemListViewModel = new HomeLineItemListViewModel();
-			List<ILineItem> model = _lineItemRepo.GetLineItemsList();
+			IEnumerable<ILineItem> model = _lineItemRepo.GetLineItemsList();
 			return View (model);
+		}
+
+		[HttpPost]
+		  public IActionResult AddProduct(HomeProductAddViewModel model)
+		{			
+			if(ModelState.IsValid)
+			{
+				string uniqueFileName = ProcessUploadedFile(model);
+				ILineItem newProduct = new LineItem
+				{
+					Name = model.Name,
+					Id = model.Id
+				};
+				ILineItem newItem = _lineItemRepo.Add(newProduct);
+				return RedirectToAction("GetLineItem", new { Id = newItem.Id });
+			}
+			return View();
+		}
+
+		private string ProcessUploadedFile(HomeProductAddViewModel model)
+		{
+			string uniqueFileName = null;
+			if (model.Photo != null)
+			{
+				string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images");
+				uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Photo.FileName;
+
+				string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+				// As soon as this block completes, the file stream is properly disposed of
+				using (var fileStream = new FileStream(filePath, FileMode.Create))
+				{
+					model.Photo.CopyTo(fileStream);
+				}
+			}
+
+			return uniqueFileName;
 		}
 
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

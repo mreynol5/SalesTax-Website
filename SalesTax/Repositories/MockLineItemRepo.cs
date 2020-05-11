@@ -19,7 +19,7 @@ namespace SalesTax.Repositories
 			 };
 		}
 
-		public List<ILineItem> GetLineItemsList()
+		public IEnumerable<ILineItem> GetLineItemsList()
 		{
 			return _LinetemList;
 		}
@@ -27,6 +27,35 @@ namespace SalesTax.Repositories
 		public ILineItem GetLineItem(int Id)
 		{
 			ILineItem item = _LinetemList.Find(e => e.Id == Id);
+			return item;
+		}
+
+		public ILineItem Add(ILineItem newProduct)
+		{
+			newProduct.Id = _LinetemList.Max(e => e.Id) + 1;
+			_LinetemList.Add(newProduct);
+			return newProduct;
+		}
+
+		public ILineItem Delete (int id)
+		{
+			ILineItem item = _LinetemList.FirstOrDefault(e => e.Id == id);
+			if (item != null)
+			{
+				_LinetemList.Remove(item);
+			}
+			return item;
+		}
+
+		public ILineItem Update(ILineItem ItemChanges)
+		{
+			ILineItem item = _LinetemList.FirstOrDefault(e => e.Id == ItemChanges.Id);
+			if (item != null)
+			{
+				item.Name = ItemChanges.Name;
+				item.Description = ItemChanges.Description;
+				item.Discount = ItemChanges.Discount ;
+			}
 			return item;
 		}
 	}

@@ -1,5 +1,9 @@
 ﻿@model List<ILineItem>
 
+@{ 
+	ViewBag.Title = "Item List";
+}
+
 	<div class="card-deck">
 		@foreach (var item in Model)
 		{

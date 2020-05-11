@@ -12,5 +12,6 @@ namespace SalesTax.ViewModels
 		public int Quantity { get;  set; }
 		public float UnitPrice { get;  set; }
 		public string ProductTaxCode { get; set; }
+		//public string Photo { get; set; }
 	}
 }

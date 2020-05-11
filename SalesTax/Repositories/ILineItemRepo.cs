@@ -6,6 +6,9 @@ namespace SalesTax.Repositories
 	public interface ILineItemRepo
 	{
 		ILineItem GetLineItem(int id);
-		List<ILineItem> GetLineItemsList( );
+		IEnumerable<ILineItem> GetLineItemsList( );
+		ILineItem Add(ILineItem product);
+		ILineItem Update(ILineItem productChanges);
+		ILineItem Delete(int Id);
 	}
 }
