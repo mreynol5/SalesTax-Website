@@ -1,34 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using RestSharp.Extensions;
 using SalesTax.Models;
 using SalesTax.Repositories;
 using SalesTax.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
 
 namespace SalesTax.Controllers
 {
 	[Route("[controller]/[action]")]
 	public class HomeController : Controller
 	{
-		private readonly IWebHostEnvironment hostingEnvironment;
-		private readonly ILineItemRepo _lineItemRepo;
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="hostEnvironment"></param>
+		/// <param name="context"></param>
 
-		public HomeController(ILineItemRepo lineItemRepo, IWebHostEnvironment hostingEnvironment)
+		private readonly ICartContentsRepo _cartContentsRepo;
+		public HomeController(ICartContentsRepo cartContentsRepo, IWebHostEnvironment hostEnvironment, AppDbContext context)
 		{
-			_lineItemRepo = lineItemRepo;
-			this.hostingEnvironment = hostingEnvironment;
+			_context = context;
+			_cartContentsRepo = cartContentsRepo;
+			_webHostEnvironment = hostEnvironment;
 		}
-	
+
+		/// <summary>
+		/// Fields
+		/// </summary>
+		private AppDbContext _context;
+		private IWebHostEnvironment _webHostEnvironment;
+		private List<Product> _cartContents;
+		//private Product _product;
+
+
 		[Route("")]
 		[Route("~/")]
 		public ViewResult Index()
-		{		
-			var model = _lineItemRepo.GetLineItemsList();
-			return View(model  );
+		{			
+			return View();
 		}
 
 		[Route("Privacy")]
@@ -38,60 +52,76 @@ namespace SalesTax.Controllers
 		}
 
 		[HttpGet]
-		[Route("GetItem/{id?}")]
-		public ViewResult GetItem(int? Id)
+		[Route("ProductDetails/{id?}")]
+		public ViewResult ProductDetails( int id)
 		{
-			int id = 1024;
-			HomeLineItemViewModel homeLineItemViewModel = new HomeLineItemViewModel()
+			id = 1001;     //remove hard coded id
+			_cartContents = _cartContentsRepo.GetCartContents();
+			Product model = _cartContentsRepo.ProductDetails(_cartContents, id);
+			HomeProductDetailsViewModel homeProductDetailsViewModel = new HomeProductDetailsViewModel()
 			{
-				Item = _lineItemRepo.GetLineItem(id),
-				PageTitle = "Single Item Details"
-			};
-			return View(homeLineItemViewModel);
+				Product = model,
+				PageTitle = "Product Details"
+			};	
+			return View(homeProductDetailsViewModel);
 		}
 
-		[Route("GetAll")]
-		public ViewResult GetLineItemsList()
+
+		[Route("CartContents")]
+		public ViewResult CartContents()
 		{
-			HomeLineItemListViewModel homeLineItemListViewModel = new HomeLineItemListViewModel();
-			IEnumerable<ILineItem> model = _lineItemRepo.GetLineItemsList();
-			return View (model);
+			//HomeCartContentsViewModel homeCartContentsViewModel = new HomeCartContentsViewModel();
+			List<Product> model = _cartContentsRepo.GetCartContents().ToList<Product>();
+			_cartContents = model;
+			//return View(homeCartContentsViewModel);
+			return View(model);
 		}
 
 		[HttpPost]
-		  public IActionResult AddProduct(HomeProductAddViewModel model)
-		{			
-			if(ModelState.IsValid)
+		public ViewResult AddProduct(Product product)
+		{
+			List<Product> model = _cartContentsRepo.GetCartContents().ToList<Product>();
+			HomeProductAddViewModel homeProductAddViewModel = new HomeProductAddViewModel();
+			product = _cartContentsRepo.Add(_cartContents, product);
 			{
-				string uniqueFileName = ProcessUploadedFile(model);
-				ILineItem newProduct = new LineItem
-				{
-					Name = model.Name,
-					Id = model.Id
-				};
-				ILineItem newItem = _lineItemRepo.Add(newProduct);
-				return RedirectToAction("GetLineItem", new { Id = newItem.Id });
-			}
-			return View();
+				product.Name = product.Name;
+				product.Id = product.Id;
+				product.Discount = product.Discount;
+			};
+			//return RedirectToAction("AddProduct", new { product.Id });
+			return View(homeProductAddViewModel);		
 		}
 
 		private string ProcessUploadedFile(HomeProductAddViewModel model)
 		{
 			string uniqueFileName = null;
-			if (model.Photo != null)
+			if (model.PhotoPath != null)
 			{
-				string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images");
-				uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Photo.FileName;
+				string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+				uniqueFileName = Guid.NewGuid().ToString() + "_" + model.PhotoPath.FileName;
 
 				string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-				// As soon as this block completes, the file stream is properly disposed of
 				using (var fileStream = new FileStream(filePath, FileMode.Create))
 				{
-					model.Photo.CopyTo(fileStream);
+					model.PhotoPath.CopyTo(fileStream);
 				}
 			}
 
 			return uniqueFileName;
+		}
+
+		[HttpPost]
+		public ViewResult RemoveProduct(Product product, int id)
+		{
+			HomeProductAddViewModel homeProductAddViewModel = new HomeProductAddViewModel();
+			product = null;
+			if (ModelState.IsValid)
+			{
+				product = _cartContentsRepo.Delete(_cartContents, product, id);
+	
+				//return RedirectToAction("AddProduct", new { product.Id });
+			}
+			return View(homeProductAddViewModel);
 		}
 
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -1,13 +1,19 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace SalesTax.Models
 {
-	public class LineItem : ILineItem
+	public class Product
 	{
 		[JsonPropertyName("id")]
 		public int Id { get; set; }
+
+		private string _orderDate;
+		public string OrderDate
+		{
+			set => _orderDate = DateTime.Now.ToString();
+		}
 
 		[Required]
 		[MaxLength (50, ErrorMessage = "Name cannot exceed 50 characters")]

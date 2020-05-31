@@ -1,18 +1,23 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SalesTax.Models
 {
-	public class AppDBContext : DbContext
+	public class AppDbContext : DbContext
 	{
-		public AppDBContext(DbContextOptions <AppDBContext> options)
+		public AppDbContext(DbContextOptions<AppDbContext> options)
+			: base(options)
 		{
+		}
+
+		protected override void OnModelCreating(ModelBuilder modelBuilder) 
+			{
+			modelBuilder.Entity<Product>()
+				.HasKey(c => c.Id);
+			modelBuilder.Seed();
 
 		}
 
-		public DbSet<ILineItem> lineItems { get; set; }
+		public DbSet<Product> Products { get; set; }
+	
 	}
 }

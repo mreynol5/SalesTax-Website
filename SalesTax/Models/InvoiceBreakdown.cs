@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace SalesTax.Models
 {
-	public class breakdown
+	public class InvoiceBreakdown
 	{
         [JsonPropertyName("taxable_amount")]
         public float TaxableAmount { get; set; }

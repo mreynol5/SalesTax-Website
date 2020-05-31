@@ -2,9 +2,9 @@
 
 namespace SalesTax.ViewModels
 {
-	public class HomeLineItemViewModel
+	public class HomeProductDetailsViewModel
 	{
-		public ILineItem Item { get; set; }
+		public Product Product { get; set; }
 		public string PageTitle { get; set; }
 		public string Name { get; set; }
 		public string Description { get; set; }
@@ -12,6 +12,6 @@ namespace SalesTax.ViewModels
 		public int Quantity { get;  set; }
 		public float UnitPrice { get;  set; }
 		public string ProductTaxCode { get; set; }
-		//public string Photo { get; set; }
+		public string PhotoPath { get; set; }
 	}
 }

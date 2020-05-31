@@ -26,8 +26,8 @@
 <body>
 	<div class="container">
 		<nav class="navbar navbar-expand small bg-dark navbar-dark">
-			<a class="navbar-brand" asp-action="index" asp-controller="home">
-				<img src="~/images/theSuper.png" height="40" width="40" />
+			<a class="navbar-brand" asp-action="Index" asp-controller="home">
+				<img src="~/images/partsCart.jpg" height="40" width="40" />
 			</a>
 			<button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#collapsibleNavbar">
 				<span class="navbar-toggler-icon"></span>
@@ -35,14 +35,18 @@
 			<div class="collapse navbar-collapse" id="collapsibleNavbar">
 				<ul class="navbar-nav">
 					<li class="nav-item">
-						<a asp-action="GetLineItemsList" asp-controller="Home" class="nav-link">Cart Contents</a>
+						<a asp-action="CartContents" asp-controller="Home" class="nav-link">Cart Contents</a>
 					</li>
 					<li class="nav-item">
-						<a asp-action="index" asp-controller="home" class="nav-link">Item Details</a>
+						<a asp-action="ProductDetails" asp-controller="home" class="nav-link">Product Details</a>
 					</li>
 					<li class="nav-item">
 						<a asp-action="AddProduct" asp-controller="home" class="nav-link">Add Product</a>
 					</li>
+					<li class="nav-item">
+						<a asp-action="RemoveProduct" asp-controller="home" class="nav-link">Remove Product</a>
+					</li>
+
 				</ul>
 			</div>
 		</nav>

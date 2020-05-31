@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace SalesTax.ViewModels
 {
-	public class HomeLineItemListViewModel
+	public class HomeCartContentsViewModel
 	{
-		public List<ILineItem> lineItemlist { get; set; }
+		public List<Product> lineItemlist { get; set; }
 		public string PageTitle { get; set; }
 		public string Name { get; set; }
 		public string Description { get; set; }

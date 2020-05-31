@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Server.IISIntegration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,11 +23,17 @@ namespace SalesTax
 
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddDbContextPool<AppDBContext>(
-				options => options.UseSqlServer(Configuration.GetConnectionString("ProductDbConnection"))) ;
-			services.AddMvc();
-			services.AddScoped<ILineItemRepo, SQLLineItemRepo>();
+			services.AddAuthentication(IISDefaults.AuthenticationScheme);
+			services.AddSingleton<ICartContentsRepo, MockCartContentsRepo>();
 			services.AddControllersWithViews();
+			services.Configure<IISServerOptions>(options =>
+			{
+				options.AutomaticAuthentication = false;
+			});
+
+			services.AddDbContextPool<AppDbContext>(
+				options => options.UseSqlServer(Configuration.GetConnectionString("ProductDbConnection")));
+			services.AddMvc();		
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -45,20 +52,20 @@ namespace SalesTax
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllerRoute(
-					name: "item",
-					pattern: "Home/GetItem/{id?}",
-					defaults: new { controller = "Home", action = "GetItem" });
+					name: "productDetails",
+					pattern: "Home/ProductDetails/{id}",
+					defaults: new { controller = "Home", action = "ProductDetails" });
 
 				endpoints.MapControllerRoute(
 					name: "add",
-					pattern: "Home/Create/{GetLineItemsList}",
+					pattern: "Home/Create/{AddProduct}",
 					defaults: new { controller = "Home", action = "AddProduct" });
 
 
 				endpoints.MapControllerRoute(
-					name: "itemlist",
-					pattern: "Home/{GetLineItemsList}",
-					defaults: new { controller = "Home", action = "GetLineItemsList " });
+					name: "cartContents",
+					pattern: "Home/{CartContents}",
+					defaults: new { controller = "Home", action = "GetCartContents " });
 
 				endpoints.MapControllerRoute(
 					name: "default",
