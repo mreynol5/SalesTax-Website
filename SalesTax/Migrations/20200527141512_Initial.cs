@@ -30,10 +30,10 @@ namespace SalesTax.Migrations
                 columns: new[] { "Id", "Description", "Discount", "Name", "PhotoPath", "ProductTaxCode", "Quantity", "UnitPrice" },
                 values: new object[,]
                 {
-                    { 900, "Toyota Tacoma battery", 10f, "Battery", "../wwwroot/images/battery.png", "0", 1, 125.78f },
-                    { 910, "Goodyear X-300", 15f, "Tire", "../wwwroot/images/tire.png", "0", 4, 145.99f },
-                    { 905, "Dodge Ram Heavy Duty Strut set", 5f, "Struts", "../wwwroot/images/struts.png", "0", 1, 98.99f },
-                    { 934, "Silverado Air Filter", 10f, "Air Filter", "../wwwroot/images/airFilter.png", "0", 1, 38.55f }
+                    { 900, "Toyota Tacoma battery", 10f, "Battery", "~/images/battery.png", "0", 1, 125.78f },
+                    { 910, "Goodyear X-300", 15f, "Tire", "~/images/tire.png", "0", 4, 145.99f },
+                    { 905, "Dodge Ram Heavy Duty Strut set", 5f, "Struts", "~/images/struts.png", "0", 1, 98.99f },
+                    { 934, "Silverado Air Filter", 10f, "Air Filter", "~/images/airFilter.png", "0", 1, 38.55f }
                 });
         }
 

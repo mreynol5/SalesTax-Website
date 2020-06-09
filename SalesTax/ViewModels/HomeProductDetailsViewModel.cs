@@ -10,7 +10,7 @@ namespace SalesTax.ViewModels
 		public string Description { get; set; }
 		public int Id { get;  set; }
 		public int Quantity { get;  set; }
-		public float UnitPrice { get;  set; }
+		public string UnitPrice { get;  set; }
 		public string ProductTaxCode { get; set; }
 		public string PhotoPath { get; set; }
 	}

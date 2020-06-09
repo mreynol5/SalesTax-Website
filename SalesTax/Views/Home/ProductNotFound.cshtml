@@ -1,0 +1,15 @@
+﻿@@model int
+@{ 
+	ViewBag.Title = "404 Error";
+}
+
+<div class=" alert alert-danger mt-1 mb-1">
+	<h4> 404 Error Not Found Error : </h4>
+	<hr />
+	<h5>
+		The product with Id = @Model was not found
+	</h5>
+	<a asp-action="CartContents" asp-controller="home" class=" btn btn-outline-success" style="width : auto">
+		Click here to see a list of items that are in your cart
+	</a>
+</div>

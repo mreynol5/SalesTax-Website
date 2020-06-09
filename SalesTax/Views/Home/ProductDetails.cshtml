@@ -3,6 +3,7 @@
 @{
 	
 	ViewBag.Title = "Product Details";
+	var photoPath = "~/Images/" +  (Model.Product.PhotoPath ?? "partsCart.jpg");
 }
 
 <div class="row justify-content-center m-3">
@@ -11,8 +12,8 @@
 			<div class="card-header">
 				<h4>@Model.Product.Name</h4>
 			</div>
-			<div class="card-body text-center">
-				<img class="card-img-top" src= @Model.Product.PhotoPath  height="50" width="50"/>
+			<div class="card-body text-center  col-sm-8 offset-1 align-content-sm-center font-weight-light f  ">
+				<img class="card-img-top" src= "@photoPath" asp-append-version="true"/>
 
 				<h4>ID : @Model.Product.Id</h4>
 				<h4>Name : @Model.Product.Name</h4>
@@ -24,7 +25,7 @@
 				<a asp-controller="home" asp-action="Index" class="btn btn-primary m-1">Back</a>
 				<a asp-controller="home" asp-action="ProductDetails" asp-route-id="@Model.Product.Id" class="btn btn-primary m-1">Display</a>
 				<a asp-controller="home" asp-action="ProductDetails" asp-route-id="@Model.Product.Id" class="btn btn-primary m-1">Edit</a>
-				<a asp-controller="home" asp-action="AddProduct" asp-route-id="@Model.Product.Id" class="btn btn-primary m-1">Add</a>
+				<a asp-controller="home" asp-action="ProductAdd" asp-route-id="@Model.Product.Id" class="btn btn-primary m-1">Add</a>
 				<a asp-controller="home" asp-action="RemoveProduct" asp-route-id="@Model.Product.Id" class="btn btn-danger m-1">Delete</a>
 			</div>
 		</div>

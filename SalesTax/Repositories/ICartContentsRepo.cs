@@ -1,14 +1,23 @@
-﻿using SalesTax.Models;
+﻿using Microsoft.AspNetCore.Http;
+using SalesTax.Models;
 using System.Collections.Generic;
+using System.Net.Http;
 
 namespace SalesTax.Repositories
 {
 	public interface ICartContentsRepo
 	{
-		Product ProductDetails(List<Product> products, int id);
-		List<Product> GetCartContents();
-		Product Add(List<Product> products, Product product);
-		void Update(ICartContentsRepo repo, List<Product> products, Product productChanges);
-		Product Delete(List<Product> products, Product product, int id);
+		Product ProductDetails(int id, AppDbContext appDbContext,
+			HttpContext httpContext, HttpClient httpClient);
+		List<Product> GetCartContents(AppDbContext dbContext,
+			HttpContext httpContext, HttpClient httpClient);
+		Product Add(Product product, AppDbContext dbContext,
+			HttpContext httpContext, HttpClient httpClient);	
+		void Update(Product productChanges, AppDbContext dbContext,
+			HttpContext httpContext, HttpClient httpClient);
+		Product Delete(int id, AppDbContext dbContext,
+			HttpContext httpContext, HttpClient httpClient);
+		Product SelectProduct(int id, AppDbContext dbContext,
+			HttpContext httpContext, HttpClient httpClient);
 	}
 }

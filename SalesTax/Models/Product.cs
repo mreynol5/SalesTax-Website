@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -32,12 +33,18 @@ namespace SalesTax.Models
 
 		[Required]
 		[JsonPropertyName("unit_price")]
-		public float UnitPrice { get; set; }
+		public string UnitPrice { get; set; }
 
 		[JsonPropertyName("discount")]
-		public float Discount { get; set; }
+		public string Discount { get; set; }
 
 		[JsonPropertyName("photoPath")]
 		public string PhotoPath { get; set; }
+
+		[JsonPropertyName("existingPhotoPath")]
+		public string ExistingPhotoPath { get; set; }
+
+		[JsonPropertyName("existingPhoto")]
+		public IFormFile Photo { get; internal set; }
 	}
 }

@@ -1,53 +1,72 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using SalesTax.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 
 namespace SalesTax.Repositories
 {
 	public class SQLCartContentsRepo : ICartContentsRepo
 	{
 		public ICartContentsRepo Repo { get; }
-		private readonly AppDbContext _context;
+		private readonly AppDbContext dbContext;
+		private List<Product>products;
 
-		public SQLCartContentsRepo(AppDbContext context)
+		public SQLCartContentsRepo(AppDbContext dbContext, 
+			HttpContext httpContext, HttpClient httpClient)
 		{			
-			_context = context;
+			this.dbContext = dbContext;
+			List<Product> products = GetCartContents(dbContext,	httpContext,  httpClient);
+			this.products = products;
 		}
 
-		public Product Add(List<Product> products, Product product)
+		public Product SelectProduct(int id, AppDbContext dbContext,
+			HttpContext httpContext, HttpClient httpClient)
 		{
-			products.Add(product);
-			_context.SaveChanges();
+			Product product = dbContext.Products.FirstOrDefault<Product>(e => e.Id == id);
 			return product;
 		}
 
-		public Product Delete(List<Product> products,  Product product, int id)
+		public Product Add(Product product, AppDbContext dbContext,
+			HttpContext httpContext, HttpClient httpClient)
 		{
-			product = products.Find(e=> e.Id == id);
+			dbContext.Products.Add(product);
+			dbContext.SaveChanges();
+			return product;
+		}
+
+		public Product Delete( int id, AppDbContext dbContext,
+			HttpContext httpContext, HttpClient httpClient)
+		{
+			Product product = dbContext.Products.Find(id, dbContext,
+				httpContext, httpClient);
 			if (product != null)
 			{
-				_context.Products.Remove(product);
-				_context.SaveChanges();
+				dbContext.Products.Remove(product);
+				dbContext.SaveChanges();
 			}
 			return product;
 		}
-		public Product ProductDetails(List<Product> products, int id)
+		public Product ProductDetails( int id, AppDbContext dbContext,
+			HttpContext httpContext, HttpClient httpClient)
 		{
-			return products.Find(e=> e.Id == id);
+			return dbContext.Products.Find(id);
 		}
 
-		public List<Product> GetCartContents()
+		public List<Product> GetCartContents(AppDbContext dbContext,
+			HttpContext httpContext, HttpClient httpClient)
 		{
-			return _context.Products.ToList<Product>();
+			return dbContext.Products.ToList<Product>();
 		}
 
-		public void Update(ICartContentsRepo repo, List<Product> products, Product productChanges)
+		public void Update(Product productChanges, AppDbContext dbContext,
+			HttpContext httpContext, HttpClient httpClient)
 		{
 			//todo gather input from user about new product
-			var product = _context.Products.Attach(productChanges);
+			var product = dbContext.Products.Attach(productChanges);
 			product.State = EntityState.Modified;
-			_context.SaveChanges();
+			dbContext.SaveChanges();
 			return ;
 		}
 	}

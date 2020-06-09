@@ -1,22 +1,23 @@
 ﻿@model List<Product>
 
 @{
-	ViewBag.Title = "Cart Contents";
+	ViewBag.Title = "Cart Contents";		
 }
 
 <div class="card-deck">
 	@foreach (var product in Model)
 	{
-		<div class="card m-3" style="min-width: 10rem; max-width: 20%;">
+		var photopath = "/Images/" + (product.PhotoPath ?? "partsCart.jpg");
+		<div class="card m-3" style="min-width:15rem; max-width:20%;">
 			<div class="card-header">
 				<h6>@product.Name</h6>
 			</div>
-			<img class="card-img-top image img-thumbnail" src="@product.PhotoPath" asp-append-version="true" />
+			<img class="card-img-top imageThumbnail" src="@photopath" asp-append-version="true" />
 			<div class="card-footer text-center">
 				<a asp-controller="home" asp-action="Index" class="btn btn-primary m-1">Back</a>
 				<a asp-controller="home" asp-action="ProductDetails" asp-route-id="@product.Id" class="btn btn-primary m-1">Display</a>
 				<a asp-controller="home" asp-action="ProductDetails" asp-route-id="@product.Id" class="btn btn-primary m-1">Edit</a>
-				<a asp-controller="home" asp-action="AddProduct" asp-route-id="@product.Id" class="btn btn-primary m-1">Add</a>
+				<a asp-controller="home" asp-action="ProductAdd" asp-route-id="@product.Id" class="btn btn-primary m-1">Add</a>
 				<a asp-controller="home" asp-action="RemoveProduct" asp-route-id="@product.Id" class="btn btn-danger m-1">Delete</a>
 			</div>
 		</div>

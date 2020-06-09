@@ -12,7 +12,7 @@ namespace SalesTax.Models
 	{
 		public static void Seed(this ModelBuilder modelBuilder)
 		{
-			string photoPath = "../wwwroot/images/";
+			var photoPath = "/Images/" ;
 
 			modelBuilder.Entity<Product>().HasData(
 				new Product
@@ -21,8 +21,8 @@ namespace SalesTax.Models
 					Name = "Battery",
 					Description = "Toyota Tacoma battery",
 					Quantity = 1,
-					Discount = 10,
-					UnitPrice = 125.78F,
+					Discount = "10",
+					UnitPrice = "125.78",
 					ProductTaxCode = "0",
 					PhotoPath = photoPath + "battery.png"
 				},
@@ -32,8 +32,8 @@ namespace SalesTax.Models
 					Name = "Tire",
 					Description = "Goodyear X-300",
 					Quantity = 4,
-					Discount = 15,
-					UnitPrice = 145.99F,
+					Discount = "15",
+					UnitPrice = "145.99",
 					ProductTaxCode = "0",
 					PhotoPath = photoPath + "tire.png"
 				},
@@ -43,8 +43,8 @@ namespace SalesTax.Models
 					Name = "Struts",
 					Description = "Dodge Ram Heavy Duty Strut set",
 					Quantity = 1,
-					Discount = 5,
-					UnitPrice = 98.99F,
+					Discount = "5",
+					UnitPrice = "98.99",
 					ProductTaxCode = "0",
 					PhotoPath = photoPath + "struts.png"
 				},
@@ -54,8 +54,8 @@ namespace SalesTax.Models
 					Name = "Air Filter",
 					Description = "Silverado Air Filter",
 					Quantity = 1,
-					Discount = 10,
-					UnitPrice = 38.55F,
+					Discount = "10",
+					UnitPrice = "38.55",
 					ProductTaxCode = "0",
 					PhotoPath = photoPath + "airFilter.png"
 				});

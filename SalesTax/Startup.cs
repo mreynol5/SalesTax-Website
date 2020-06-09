@@ -19,7 +19,7 @@ namespace SalesTax
 		public Startup(IConfiguration configuration)
 		{
 			Configuration = configuration;
-		}		
+		}
 
 		public void ConfigureServices(IServiceCollection services)
 		{
@@ -33,7 +33,7 @@ namespace SalesTax
 
 			services.AddDbContextPool<AppDbContext>(
 				options => options.UseSqlServer(Configuration.GetConnectionString("ProductDbConnection")));
-			services.AddMvc();		
+			services.AddMvc();
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -44,7 +44,8 @@ namespace SalesTax
 			}
 			else
 			{
-				app.UseExceptionHandler("/Home/Error");
+				app.UseExceptionHandler("/Error");
+				app.UseStatusCodePagesWithReExecute("/Error/{0}");
 			}
 			app.UseStaticFiles();
 			app.UseHttpsRedirection();
@@ -58,9 +59,18 @@ namespace SalesTax
 
 				endpoints.MapControllerRoute(
 					name: "add",
-					pattern: "Home/Create/{AddProduct}",
-					defaults: new { controller = "Home", action = "AddProduct" });
+					pattern: "Home/ProductAdd/{newProduct}",
+					defaults: new { controller = "Home", action = "ProductAdd" });
 
+				endpoints.MapControllerRoute(
+					name: "remove",
+					pattern: "Home/{id}",
+					defaults: new { controller = "Home", action = "ProductRemove" });
+
+				endpoints.MapControllerRoute(
+					name: "edit",
+					pattern: "Home/{id}",
+					defaults: new { controller = "Home", action = "ProductEdit" });
 
 				endpoints.MapControllerRoute(
 					name: "cartContents",
@@ -71,7 +81,11 @@ namespace SalesTax
 					name: "default",
 					pattern: "{controller=Home}/{action=Index}/{Id?}");
 
-				//endpoints.MapControllers();		  //uncomment for Attribute Routing
+				app.UseEndpoints(endpoints =>
+				{
+					endpoints.MapControllers();
+				});
+				
 			});
 
 		}

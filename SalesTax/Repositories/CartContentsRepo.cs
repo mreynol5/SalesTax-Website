@@ -1,35 +1,62 @@
-﻿using SalesTax.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.AspNetCore.Http;
+using SalesTax.Models;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.FileProviders;
+using System.Net.Http;
 
 namespace SalesTax.Repositories
 {
 	public class CartContentsRepo : ICartContentsRepo
 	{
-		private readonly AppDbContext _context;
-		private List<Product> _products;
-		public CartContentsRepo(AppDbContext Context)
+		private readonly AppDbContext dbContext;
+		private readonly HttpClient httpClient;
+		private List<Product> products;
+		private HttpContext httpContext { get; }
+
+		public CartContentsRepo(AppDbContext dbContext, HttpContext httpContext,
+			HttpClient httpClient)
 		{
-			_context = Context;
-			_products = GetCartContents();
+			this.dbContext = dbContext;
+			this.httpClient = httpClient;
+			products = GetCartContents(dbContext, httpContext, httpClient);
+			this.httpContext = httpContext;
 		}
 
-		public Product ProductDetails(List<Product> products, int id)
+		public Product SelectProduct(int id, AppDbContext appDbContext,
+			HttpContext httpContext, HttpClient httpClient)
 		{
-			Product product = _context.Products.FirstOrDefault<Product>(e => e.Id == id);
+			Product product = dbContext.Products. FirstOrDefault<Product>(e => e.Id == id);
 			return product;
 		}
 
-		public Product Add(List<Product> products, Product product)
+		public Product ProductDetails(int id, AppDbContext dbContext, HttpContext httpContext,
+			HttpClient httpClient)
 		{
-			int id = products.Max(e => e.Id) + 1;
-			products.Append<Product>(product);
+			Product product = dbContext.Products.FirstOrDefault<Product>(e => e.Id == id);
+
+			if(product == null)
+			{
+				var response =  httpContext.Response.StatusCode = 404;
+				return null ;
+			}
 			return product;
 		}
 
-		public Product Delete(List<Product> products, Product product, int id)
+		public Product Add(Product product, AppDbContext appDbContext,
+			HttpContext httpContext, HttpClient httpClient)
 		{
-			Product deletedProduct = _context.Products.FirstOrDefault(e => e.Id == id);
+			product.Id = products.Max(e => e.Id) + 1;
+			products.Add(product);
+			return product;
+		}
+
+		public Product Delete(int id, AppDbContext appDbContext,
+			HttpContext httpContext, HttpClient httpClient)
+		{
+			Product deletedProduct = dbContext.Products.FirstOrDefault(e => e.Id == id);
 			if (deletedProduct != null)
 			{
 				products.Remove(deletedProduct);
@@ -37,7 +64,8 @@ namespace SalesTax.Repositories
 			return deletedProduct;
 		}
 
-		public void Update(ICartContentsRepo repo, List<Product> products,  Product productChanges)
+		public void Update(Product productChanges, AppDbContext appDbContext,
+			HttpContext httpContext, HttpClient httpClient)
 		{
 		
 			Product product = products.FirstOrDefault(e => e.Id == productChanges. Id);
@@ -50,11 +78,12 @@ namespace SalesTax.Repositories
 			return ;
 		}
 
-		public List<Product> GetCartContents()
+		public List<Product> GetCartContents(AppDbContext appDbContext,
+			HttpContext httpContext, HttpClient httpClient)
 		{
-			List<Product> cartContents = _context.Products.ToList();
-			_products = cartContents;
-			return _products;
+			List<Product> cartContents = dbContext.Products.ToList();
+			products = cartContents;
+			return products;
 		}
 	}
 }

@@ -28,8 +28,8 @@ namespace SalesTax.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("Discount")
-                        .HasColumnType("real");
+                    b.Property<string>("Discount")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -45,8 +45,9 @@ namespace SalesTax.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<float>("UnitPrice")
-                        .HasColumnType("real");
+                    b.Property<string>("UnitPrice")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -57,45 +58,45 @@ namespace SalesTax.Migrations
                         {
                             Id = 900,
                             Description = "Toyota Tacoma battery",
-                            Discount = 10f,
+                            Discount = "10",
                             Name = "Battery",
-                            PhotoPath = "../wwwroot/images/battery.png",
+                            PhotoPath = "/images/battery.png",
                             ProductTaxCode = "0",
                             Quantity = 1,
-                            UnitPrice = 125.78f
+                            UnitPrice = "125.78"
                         },
                         new
                         {
                             Id = 910,
                             Description = "Goodyear X-300",
-                            Discount = 15f,
+                            Discount = "15",
                             Name = "Tire",
-                            PhotoPath = "../wwwroot/images/tire.png",
+                            PhotoPath = "/images/tire.png",
                             ProductTaxCode = "0",
                             Quantity = 4,
-                            UnitPrice = 145.99f
+                            UnitPrice = "145.99"
                         },
                         new
                         {
                             Id = 905,
                             Description = "Dodge Ram Heavy Duty Strut set",
-                            Discount = 5f,
+                            Discount = "5",
                             Name = "Struts",
-                            PhotoPath = "../wwwroot/images/struts.png",
+                            PhotoPath = "/images/struts.png",
                             ProductTaxCode = "0",
                             Quantity = 1,
-                            UnitPrice = 98.99f
+                            UnitPrice = "98.99"
                         },
                         new
                         {
                             Id = 934,
                             Description = "Silverado Air Filter",
-                            Discount = 10f,
+                            Discount = "10",
                             Name = "Air Filter",
-                            PhotoPath = "../wwwroot/images/airFilter.png",
+                            PhotoPath = "/images/airFilter.png",
                             ProductTaxCode = "0",
                             Quantity = 1,
-                            UnitPrice = 38.55f
+                            UnitPrice = "38.55"
                         });
                 });
 #pragma warning restore 612, 618

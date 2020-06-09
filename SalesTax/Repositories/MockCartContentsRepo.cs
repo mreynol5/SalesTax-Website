@@ -1,4 +1,6 @@
-﻿using SalesTax.Models;
+﻿using Microsoft.AspNetCore.Http;
+using System.Net.Http;
+using SalesTax.Models;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,33 +17,44 @@ namespace SalesTax.Repositories
 		{
 			cartContentsList = new List<Product>()
 			{
-				new Product () { Name = "Tire",  Description = "All weather", Id = 1001,  Quantity = 4,  UnitPrice = 125.95F, ProductTaxCode = "0", PhotoPath = "/images/tire.png"  },
-				new Product () {  Name = "Struts",  Description = "Truck struts",  Id = 1015,   Quantity = 2, UnitPrice = 145.95F, ProductTaxCode = "0", PhotoPath = "/images/struts.png"  },
-				new Product() {  Name = "Radiator",  Description = "F 150",  Id = 1021,  Quantity = 6, UnitPrice = 209.95F, ProductTaxCode = "0", PhotoPath = "/images/tires.png"  },
-				new Product() {  Name = "Wipers",  Description = "Winter",  Id = 1038,  Quantity = 1,  UnitPrice = 09.95F, ProductTaxCode = "0", PhotoPath = "/images/tires.png"  },
-				new Product () {  Name = "Seat Covers",  Description = "Cloth",  Id = 1047, Quantity = 4,  UnitPrice = 52.95F, ProductTaxCode = "0", PhotoPath = "/images/tires.png"  }
+				new Product () { Name = "Tire",  Description = "All weather", Id = 1001,  Quantity = 4,  UnitPrice = "125.95", ProductTaxCode = "0", Discount = "5", PhotoPath = "tire.png"  },
+				new Product () {  Name = "Struts",  Description = "Truck struts",  Id = 1015,   Quantity = 2, UnitPrice = "145.95", ProductTaxCode = "0", Discount = "15", PhotoPath = "struts.png"  },
+				new Product() {  Name = "airFilter,png",  Description = "F 150",  Id = 1021,  Quantity = 6, UnitPrice = "32.78", ProductTaxCode = "0", Discount = "25",PhotoPath = "tires.png"  },
+				new Product() {  Name = "Wipers",  Description = "Winter",  Id = 1038,  Quantity = 1,  UnitPrice = "9.95", ProductTaxCode = "0", Discount = "5",  PhotoPath =  "wipers.jpg"  },
+				new Product () {  Name = "Seat Covers",  Description = "Cloth",  Id = 1047, Quantity = 4,  UnitPrice = "52.95", ProductTaxCode = "0", Discount = "10", PhotoPath =  "seatCover.png"  }
 			 };
 		}
 
-		public List<Product> GetCartContents()
+		public Product SelectProduct(int id, AppDbContext appDbContext,
+			HttpContext httpContext, HttpClient httpClient)
 		{
-			return cartContentsList;
+			Product product = cartContentsList.FirstOrDefault<Product>(e => e.Id == id);
+			return product;
 		}
 
-		public Product ProductDetails(List<Product> products, int id)
+		public List<Product> GetCartContents(AppDbContext appDbContext,
+			HttpContext httpContext, HttpClient httpClient)
+		{
+			return cartContentsList;
+		}										
+
+		public Product ProductDetails(int id, AppDbContext appDbContext,
+			HttpContext httpContext, HttpClient httpClient)
 		{
 			Product product = cartContentsList.FirstOrDefault<Product> (e => e.Id == id);
 			return product;
 		}
 
-		public Product Add(List<Product> products, Product product)
+		public Product Add( Product product, AppDbContext appDbContext,
+			HttpContext httpContext, HttpClient httpClient)
 		{
 			product.Id = cartContentsList.Max(e => e.Id) + 1;
-			cartContentsList.Append<Product>(product);
+			cartContentsList.Add(product);
 			return product;
 		}
 
-		public Product Delete( List<Product> products, Product product, int id)
+		public Product Delete(int id, AppDbContext appDbContext,
+			HttpContext httpContext, HttpClient httpClient)
 		{
 			Product item = cartContentsList.FirstOrDefault(e => e.Id == id);
 			if (item != null)
@@ -51,9 +64,11 @@ namespace SalesTax.Repositories
 			return item;
 		}
 
-		public void Update(ICartContentsRepo repo, List<Product> products, Product productChanges)
+		public void Update(Product productChanges, AppDbContext appDbContext,
+			HttpContext httpContext, HttpClient httpClient)
 		{
-			product = cartContentsList.FirstOrDefault(e => e.Id == product.Id);
+			int id = 1015;	  //remove this after testing
+			product = cartContentsList.FirstOrDefault(e => e.Id == id);
 			if (product != null)
 			{
 				product.Name = product.Name;
