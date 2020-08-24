@@ -11,12 +11,15 @@ namespace SalesTax.Repositories
 	{
 		public ICartContentsRepo Repo { get; }
 		private readonly AppDbContext dbContext;
+		private readonly HttpContext httpContext;
+
 		private List<Product>products;
 
 		public SQLCartContentsRepo(AppDbContext dbContext, 
 			HttpContext httpContext, HttpClient httpClient)
 		{			
 			this.dbContext = dbContext;
+			this.httpContext = httpContext;
 			List<Product> products = GetCartContents(dbContext,	httpContext,  httpClient);
 			this.products = products;
 		}

@@ -25,7 +25,7 @@ namespace SalesTax.Repositories
 			this.httpContext = httpContext;
 		}
 
-		public Product SelectProduct(int id, AppDbContext appDbContext,
+		public Product SelectProduct(int id, AppDbContext dbContext,
 			HttpContext httpContext, HttpClient httpClient)
 		{
 			Product product = dbContext.Products. FirstOrDefault<Product>(e => e.Id == id);
@@ -45,7 +45,7 @@ namespace SalesTax.Repositories
 			return product;
 		}
 
-		public Product Add(Product product, AppDbContext appDbContext,
+		public Product Add(Product product, AppDbContext dbContext,
 			HttpContext httpContext, HttpClient httpClient)
 		{
 			product.Id = products.Max(e => e.Id) + 1;
@@ -53,7 +53,7 @@ namespace SalesTax.Repositories
 			return product;
 		}
 
-		public Product Delete(int id, AppDbContext appDbContext,
+		public Product Delete(int id, AppDbContext dbContext,
 			HttpContext httpContext, HttpClient httpClient)
 		{
 			Product deletedProduct = dbContext.Products.FirstOrDefault(e => e.Id == id);
@@ -64,7 +64,7 @@ namespace SalesTax.Repositories
 			return deletedProduct;
 		}
 
-		public void Update(Product productChanges, AppDbContext appDbContext,
+		public void Update(Product productChanges, AppDbContext dbContext,
 			HttpContext httpContext, HttpClient httpClient)
 		{
 		
@@ -78,7 +78,7 @@ namespace SalesTax.Repositories
 			return ;
 		}
 
-		public List<Product> GetCartContents(AppDbContext appDbContext,
+		public List<Product> GetCartContents(AppDbContext dbContext,
 			HttpContext httpContext, HttpClient httpClient)
 		{
 			List<Product> cartContents = dbContext.Products.ToList();

@@ -6,12 +6,19 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace SalesTax.Controllers
 {
 	public class ErrorController : Controller
 	{
-		[Route("")]
+		private readonly ILogger<ErrorController> logger;
+
+		public ErrorController(ILogger<ErrorController> logger)
+		{
+			this.logger = logger;
+		}
+		
 		[Route("Error/{statusCode}")]
 		public IActionResult HttpStatusCodeHandler(int statusCode)
 		{
@@ -20,9 +27,8 @@ namespace SalesTax.Controllers
 			{
 				case 404:
 					ViewBag.ErrorMessage = "Sorry, the resource you requested could not be found";
-					ViewBag.Path = statusCodeResult.OriginalPath;
-					ViewBag.Query = statusCodeResult.OriginalQueryString;
-
+					logger.LogWarning($"404 Error Occured.  Path = {statusCodeResult.OriginalPath}" +
+						$" and the QueryString = {statusCodeResult.OriginalQueryString}");
 					break;
 			}
 			return View ("NotFound");
@@ -35,9 +41,8 @@ namespace SalesTax.Controllers
 		{
 			var exceptionDetails = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
 
-			ViewBag.ExceptionPath = exceptionDetails.Path;
-			ViewBag.ExceptionMessage = exceptionDetails.Error.Message;
-			ViewBag.StackTrace = exceptionDetails.Error.StackTrace;
+			logger.LogError($"The path {exceptionDetails.Path} threw an exception " +
+				$"{exceptionDetails.Error}");
 
 			return View("Error");
 		}

@@ -23,17 +23,23 @@ namespace SalesTax
 
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddAuthentication(IISDefaults.AuthenticationScheme);
+			services.AddDbContextPool<AppDbContext>(
+				options => options.UseSqlServer(Configuration.GetConnectionString
+				("ProductDbConnection")));
+
+			//services.AddIdentity<ApplicationUser, IdentityRole>()
+			//	.AddEntityFrameworkStores<AppDbContext>();
+			//services.AddAuthentication(IISDefaults.AuthenticationScheme);
 			services.AddSingleton<ICartContentsRepo, MockCartContentsRepo>();
-			services.AddControllersWithViews();
+			services.AddHttpContextAccessor();
+			services.AddHttpClient();
 			services.Configure<IISServerOptions>(options =>
 			{
 				options.AutomaticAuthentication = false;
 			});
 
-			services.AddDbContextPool<AppDbContext>(
-				options => options.UseSqlServer(Configuration.GetConnectionString("ProductDbConnection")));
 			services.AddMvc();
+			services.AddControllersWithViews();
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

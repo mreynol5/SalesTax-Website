@@ -7,7 +7,7 @@ namespace SalesTax.Repositories
 {
 	public interface ICartContentsRepo
 	{
-		Product ProductDetails(int id, AppDbContext appDbContext,
+		Product ProductDetails(int id, AppDbContext dbContext,
 			HttpContext httpContext, HttpClient httpClient);
 		List<Product> GetCartContents(AppDbContext dbContext,
 			HttpContext httpContext, HttpClient httpClient);

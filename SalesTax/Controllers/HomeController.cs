@@ -11,6 +11,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
 namespace SalesTax.Controllers
 {
@@ -21,28 +23,34 @@ namespace SalesTax.Controllers
 		/// Constructor
 		/// </summary>
 		/// <param name="hostEnvironment"></param>
-		/// <param name="DbContext"></param>
 
 		private readonly ICartContentsRepo cartContentsRepo;
 		private readonly IWebHostEnvironment hostingEnvironment;
-		private readonly HttpContext httpContext;
-		private readonly HttpClient httpClient;
 		private readonly AppDbContext dbContext;
+		private readonly ILogger logger;
 		private List<Product> cartContents;
+		private HttpContextAccessor httpContextAccessor { get; }
+		private HttpContext httpContext;
+		private readonly HttpClient httpClient;
 
-		public HomeController(ICartContentsRepo cartContentsRepo, 
-			IWebHostEnvironment hostingEnvironment, 
+		public HomeController(ICartContentsRepo cartContentsRepo,
+			IWebHostEnvironment hostingEnvironment,
+			IHttpContextAccessor httpContextAccessor,
 			AppDbContext dbContext,
-			HttpContext httpContext, 
-			HttpClient httpClient)
+			IHttpClientFactory httpClientFactory,
+			ILogger<HomeController> logger)
+			
 		{
 			this.cartContentsRepo = cartContentsRepo;
 			this.hostingEnvironment = hostingEnvironment;
-			this.dbContext = dbContext;
+			HttpContext httpContext = httpContextAccessor.HttpContext;
 			this.httpContext = httpContext;
-			this.httpClient = httpClient;
-			cartContents =  cartContentsRepo.GetCartContents(dbContext,
-			 httpContext, httpClient);
+			httpClient = httpClientFactory.CreateClient();
+
+			this.dbContext = dbContext;
+			this.logger = logger;
+			this.cartContents = cartContentsRepo.GetCartContents(dbContext, httpContextAccessor.HttpContext,
+				httpClient);
 		}
 
 		/// <summary>
@@ -64,16 +72,21 @@ namespace SalesTax.Controllers
 
 		[HttpGet]
 		[Route("ProductDetails/{id?}")]
-		public ViewResult ProductDetails(int? id,  AppDbContext dbContext, 
+		public ViewResult ProductDetails(int? id, AppDbContext dbContext,
 			HttpContext httpContext, HttpClient httpClient)
-		{			
-			Product model = cartContentsRepo.ProductDetails(id.Value,  dbContext,
+		{
+			logger.LogInformation("Entering Product Details for ID  + ${ id }");
+
+
+			Product model = cartContentsRepo.ProductDetails(id.Value, dbContext,
 						httpContext, httpClient);
-			if(model == null)
+			if (model == null)
 			{
 				Response.StatusCode = 404;
 				return View("That product is not in your cart", id.Value);
 			}
+			string sModel = model.ToString();
+			logger.LogInformation("model is + ${ sModel }");
 			HomeProductDetailsViewModel homeProductDetailsViewModel = new HomeProductDetailsViewModel()
 			{
 				Product = model,
@@ -95,7 +108,7 @@ namespace SalesTax.Controllers
 			Product product = cartContentsRepo.ProductDetails(id,
 				dbContext, httpContext, httpClient);
 
-			if(product == null)
+			if (product == null)
 			{
 				Response.StatusCode = 404;
 				return View("Product was not found", id);
@@ -121,7 +134,7 @@ namespace SalesTax.Controllers
 			if (ModelState.IsValid)
 			{
 				Product product = cartContentsRepo.ProductDetails(model.Id, dbContext,
-								httpContext,  httpClient);
+								httpContext, httpClient);
 				product.Name = model.Name;
 				product.Description = model.Description;
 				product.Discount = model.Discount.ToString();
@@ -130,7 +143,7 @@ namespace SalesTax.Controllers
 				product.PhotoPath = model.PhotoPath;
 				if (product.Photo != null)
 				{
-					if(product.ExistingPhotoPath != null)
+					if (product.ExistingPhotoPath != null)
 					{
 						string filePath = Path.Combine(hostingEnvironment.WebRootPath, "images",
 							product.ExistingPhotoPath);
@@ -140,7 +153,7 @@ namespace SalesTax.Controllers
 				}
 
 				cartContentsRepo.Update(product, dbContext,
-							httpContext,  httpClient);
+							httpContext, httpClient);
 				return RedirectToAction("ProductDetails", new { id = product.Id });
 			}
 			return View();
@@ -161,7 +174,7 @@ namespace SalesTax.Controllers
 				if (model.Photo != null)
 				{
 					string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images");
-					uniqueFileName =  Guid.NewGuid().ToString() + "_" + model.Photo.FileName;
+					uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Photo.FileName;
 					string filePath = Path.Combine(uploadsFolder, uniqueFileName);
 					model.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
 				}
@@ -178,6 +191,13 @@ namespace SalesTax.Controllers
 				return RedirectToAction("ProductDetails", new { id = newProduct.Id });
 			}
 			return View();
+		}
+
+		public RedirectToActionResult ProductRemove(int id, AppDbContext dbContext,
+			HttpContext httpContext, HttpClient httpClient)
+		{
+			Product product = cartContentsRepo.Delete(id, dbContext, httpContext, httpClient);
+			return RedirectToAction("CartContents");
 		}
 
 		private string ProcessUploadedFile(HomeProductAddViewModel model)
@@ -197,12 +217,7 @@ namespace SalesTax.Controllers
 			return uniqueFileName;
 		}
 
-		public RedirectToActionResult ProductRemove(int id,  AppDbContext dbContext,
-			HttpContext httpContext, HttpClient httpClient)
-		{
-			Product product = cartContentsRepo.Delete(id, dbContext, httpContext, httpClient);
-			return RedirectToAction("CartContents");
-		}
+
 
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()

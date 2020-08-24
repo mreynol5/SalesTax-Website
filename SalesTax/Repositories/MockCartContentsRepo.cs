@@ -3,6 +3,7 @@ using System.Net.Http;
 using SalesTax.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SalesTax.Repositories
 {
@@ -25,27 +26,27 @@ namespace SalesTax.Repositories
 			 };
 		}
 
-		public Product SelectProduct(int id, AppDbContext appDbContext,
+		public Product SelectProduct(int id, AppDbContext dbContext,
 			HttpContext httpContext, HttpClient httpClient)
 		{
 			Product product = cartContentsList.FirstOrDefault<Product>(e => e.Id == id);
 			return product;
 		}
 
-		public List<Product> GetCartContents(AppDbContext appDbContext,
+		public List<Product> GetCartContents(AppDbContext dbContext,
 			HttpContext httpContext, HttpClient httpClient)
 		{
 			return cartContentsList;
 		}										
 
-		public Product ProductDetails(int id, AppDbContext appDbContext,
+		public Product ProductDetails(int id, AppDbContext dbContext,
 			HttpContext httpContext, HttpClient httpClient)
 		{
 			Product product = cartContentsList.FirstOrDefault<Product> (e => e.Id == id);
 			return product;
 		}
 
-		public Product Add( Product product, AppDbContext appDbContext,
+		public Product Add( Product product, AppDbContext dbContext,
 			HttpContext httpContext, HttpClient httpClient)
 		{
 			product.Id = cartContentsList.Max(e => e.Id) + 1;
@@ -53,7 +54,7 @@ namespace SalesTax.Repositories
 			return product;
 		}
 
-		public Product Delete(int id, AppDbContext appDbContext,
+		public Product Delete(int id, AppDbContext dbContext,
 			HttpContext httpContext, HttpClient httpClient)
 		{
 			Product item = cartContentsList.FirstOrDefault(e => e.Id == id);
@@ -64,7 +65,7 @@ namespace SalesTax.Repositories
 			return item;
 		}
 
-		public void Update(Product productChanges, AppDbContext appDbContext,
+		public void Update(Product productChanges, AppDbContext dbContext,
 			HttpContext httpContext, HttpClient httpClient)
 		{
 			int id = 1015;	  //remove this after testing
